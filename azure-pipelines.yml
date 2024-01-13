@@ -27,11 +27,13 @@ steps:
     action: 'deploy'
     connectionType: 'kubernetesServiceConnection'
     kubernetesServiceConnection: 'terraform-aks-cluster-sp'
-    namespace: 'terraform-aks-cluster-sp'
+    namespace: 'Web-app-devops'
     manifests: 'application-manifest.yaml'
     # containers:
     # imagePullSecrets: 
     
+- script: Container image deployed
+  displayName: 'Container imabe deployed'
 
 - script: |
     echo Image deployed to AKS.
