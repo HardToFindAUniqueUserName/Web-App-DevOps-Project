@@ -19,10 +19,21 @@ steps:
     Dockerfile: '**/Dockerfile'
     tags: 'latest'
 
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+- script: Container image built
+  displayName: 'Container imabe built'
+
+- task: KubernetesManifest@1
+  inputs:
+    action: 'deploy'
+    connectionType: 'kubernetesServiceConnection'
+    kubernetesServiceConnection: 'terraform-aks-cluster-sp'
+    namespace: 'terraform-aks-cluster-sp'
+    manifests: 'application-manifest.yaml'
+    # containers:
+    # imagePullSecrets: 
+    
 
 - script: |
-    echo Add other tasks to build, test, and deploy your project.
+    echo Image deployed to AKS.
     echo See https://aka.ms/yaml
   displayName: 'Run a multi-line script'
