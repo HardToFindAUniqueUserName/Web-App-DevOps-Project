@@ -19,9 +19,6 @@ steps:
     Dockerfile: '**/Dockerfile'
     tags: 'latest'
 
-- script: Container image built
-  displayName: 'Container imabe built'
-
 - task: KubernetesManifest@1
   inputs:
     action: 'deploy'
