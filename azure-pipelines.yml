@@ -30,9 +30,10 @@ steps:
     manifests: 'application-manifest.yaml'
     
 - task: CmdLine@2
+  displayName: $(kubectl get svc flask-app-service -n default -o jsonpath="{.status.loadBalancer.ingress[*].ip}")
   inputs:
     script: |
-      echo "$(curl -s ipinfo.io/ip)"
+      echo "$(kubectl get svc flask-app-service -n default -o jsonpath="{.status.loadBalancer.ingress[*].ip}")"
       
       echo Hello world
 
