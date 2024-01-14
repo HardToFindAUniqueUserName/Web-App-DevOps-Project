@@ -25,12 +25,12 @@ steps:
 - task: KubernetesManifest@1
   inputs:
     action: 'deploy'
-    connectionType: 'kubernetesServiceConnection'
-    kubernetesServiceConnection: 'terraform-aks-cluster-sp'
-    namespace: 'Web-app-devops'
+    connectionType: 'azureResourceManager'
+    azureSubscriptionConnection: 'Paul Mayer DevOps(3542213f-7e7a-4dad-aea4-fe30482ed0f3)'
+    azureResourceGroup: 'networking-resource-group'
+    kubernetesCluster: 'terraform-aks-cluster'
+    namespace: 'web-app-devops'
     manifests: 'application-manifest.yaml'
-    # containers:
-    # imagePullSecrets: 
     
 - script: Container image deployed
   displayName: 'Container imabe deployed'
