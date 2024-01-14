@@ -28,3 +28,10 @@ steps:
     kubernetesCluster: 'terraform-aks-cluster'
     namespace: 'default'
     manifests: 'application-manifest.yaml'
+
+- task: CmdLine@2
+  inputs:
+    script: |
+      kubectl get svc flask-app-service -n default -o jsonpath="{.status.loadBalancer.ingress[*].ip}"
+      
+      echo kubectl get svc flask-app-service -n default -o jsonpath="{.status.loadBalancer.ingress[*].ip}"
