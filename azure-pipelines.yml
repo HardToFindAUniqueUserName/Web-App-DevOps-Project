@@ -32,7 +32,7 @@ steps:
 - task: CmdLine@2
   inputs:
     script: |
-      echo curl -s http://ipinfo.io/json | jq '.ip'
+      echo "$(curl -s ipinfo.io/ip)"
       
       echo Hello world
 
