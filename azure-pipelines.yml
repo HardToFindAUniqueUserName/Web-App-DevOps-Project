@@ -29,8 +29,12 @@ steps:
     namespace: 'default'
     manifests: 'application-manifest.yaml'
     
-# - script: Container image deployed
-#   displayName: 'Container imabe deployed'
+- task: CmdLine@2
+  inputs:
+    script: |
+      echo curl -s http://ipinfo.io/json | jq '.ip'
+      
+      echo Hello world'
 
 # - script: |
 #     echo Image deployed to AKS.
