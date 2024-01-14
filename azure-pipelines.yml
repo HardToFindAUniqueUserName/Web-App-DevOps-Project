@@ -29,9 +29,12 @@ steps:
     namespace: 'default'
     manifests: 'application-manifest.yaml'
 
-- task: CmdLine@2
+- task: Kubernetes@1
   inputs:
-    script: |
-      kubectl get svc flask-app-service -n default -o jsonpath="{.status.loadBalancer.ingress[*].ip}"
-      
-      echo kubectl get svc flask-app-service -n default -o jsonpath="{.status.loadBalancer.ingress[*].ip}"
+    connectionType: 'Kubernetes Service Connection'
+    kubernetesServiceEndpoint: 'terraform-aks-cluster-sp'
+    namespace: 'default'
+    command: 'get'
+    arguments: 'svc flask-app-service -n default -o jsonpath="{.status.loadBalancer.ingress[*].ip}"'
+    secretType: 'dockerRegistry'
+    containerRegistryType: 'Azure Container Registry'
