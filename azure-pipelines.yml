@@ -34,7 +34,7 @@ steps:
     script: |
       echo curl -s http://ipinfo.io/json | jq '.ip'
       
-      echo Hello world'
+      echo Hello world
 
 # - script: |
 #     echo Image deployed to AKS.
