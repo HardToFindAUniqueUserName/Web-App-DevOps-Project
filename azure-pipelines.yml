@@ -37,4 +37,11 @@ steps:
     command: 'get'
     arguments: 'svc flask-app-service -n default -o jsonpath="{.status.loadBalancer.ingress[*].ip}"'
     secretType: 'dockerRegistry'
-    containerRegistryType: 'Azure Container Registry'
+    containerRegistryType: 'Azure Container Registry' 
+
+- task: CmdLine@2
+  inputs:
+    script: |
+      echo "$(kubectl describe services flask-app-service | grep 'LoadBalancer Ingress')"
+      
+      echo kubectl describe services flask-app-service | grep 'LoadBalancer Ingress'
