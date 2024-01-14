@@ -26,7 +26,7 @@ steps:
     azureSubscriptionConnection: 'Paul Mayer DevOps(3542213f-7e7a-4dad-aea4-fe30482ed0f3)'
     azureResourceGroup: 'networking-resource-group'
     kubernetesCluster: 'terraform-aks-cluster'
-    namespace: 'web-app-devops'
+    namespace: 'default'
     manifests: 'application-manifest.yaml'
     
 - script: Container image deployed
