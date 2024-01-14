@@ -28,16 +28,3 @@ steps:
     kubernetesCluster: 'terraform-aks-cluster'
     namespace: 'default'
     manifests: 'application-manifest.yaml'
-    
-- task: CmdLine@2
-  displayName: $(kubectl get svc flask-app-service -n default -o jsonpath="{.status.loadBalancer.ingress[*].ip}")
-  inputs:
-    script: |
-      echo "$(kubectl get svc flask-app-service -n default -o jsonpath="{.status.loadBalancer.ingress[*].ip}")"
-      
-      echo Hello world
-
-# - script: |
-#     echo Image deployed to AKS.
-#     echo See https://aka.ms/yaml
-#   displayName: 'Run a multi-line script'
