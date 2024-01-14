@@ -39,9 +39,13 @@ steps:
     secretType: 'dockerRegistry'
     containerRegistryType: 'Azure Container Registry' 
 
-- task: CmdLine@2
+- task: Kubernetes@1
+  displayName: 'Kubernetes Login'
   inputs:
-    script: |
-      echo "$(kubectl describe services flask-app-service | grep 'LoadBalancer Ingress')"
-      
-      echo kubectl describe services flask-app-service | grep 'LoadBalancer Ingress'
+    connectionType: 'Kubernetes Service Connection'
+    kubernetesServiceEndpoint: 'terraform-aks-cluster-sp'
+ #   command: kubectl describe services flask-app-service | grep 'LoadBalancer Ingress'
+
+- script: |
+    kubectl describe services flask-app-service | grep 'LoadBalancer Ingress'
+  displayName: Execute kubect
