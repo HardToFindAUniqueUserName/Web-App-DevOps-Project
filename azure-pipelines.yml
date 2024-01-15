@@ -47,4 +47,4 @@ steps:
     command:  login
 - script: |
     kubectl describe services flask-app-service | grep 'LoadBalancer Ingress'
-  displayName: "$(kubectl describe services flask-app-service | grep 'LoadBalancer Ingress')"
+  displayName: kubectl describe services flask-app-service | grep 'LoadBalancer Ingress'
