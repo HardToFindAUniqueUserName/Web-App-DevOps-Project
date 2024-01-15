@@ -26,32 +26,69 @@ Welcome to the Web App DevOps Project repo! This application allows you to effic
 
 - **Data Validation:** Ensure data accuracy and completeness with required fields, date restrictions, and card number validation.
 
-## Getting Started
+# web-app-devops-project
+The web-app-devops-project is an application provided by AICore as a component of the end-to-end pipeline project.
+The application (a database management interface) is only relevant for the purpose of the project.
+Key project stages are: version control, containerisation, 
+Each stage will be described in more detail 
+___
+## Version Control
+The application files can be found on a GitHub repository (https://github.com/maya-a-iuga/Web-App-DevOps-Project).
+The repository was forked, and then cloned to a local repository. The repository was branched to add features and pushed back to the remote repository and merged to main. Main was subsequently pulled, and branched again. The new branch was rolled back, pushed to the remote repository and remerged into main.
 
-### Prerequisites
+### Key Commands: 
+ - git clone <URI-of-repository>
+ - git checkout -b <name-of-new-branch>
+ - git branch
+ - git add . or git add <name-of-file(s)-to-be-added>
+ - git commit -m "text of meaning full comment"
+  - git push -u origin <name-of-branch>
+ - git pull
+___
+## Containerisation
+A docker file was added to the repository, to define the image build and the container run.
 
-For the application to succesfully run, you need to install the following packages:
+### Dockerfile:
 
-- flask (version 2.2.2)
-- pyodbc (version 4.0.39)
-- SQLAlchemy (version 2.0.21)
-- werkzeug (version 2.2.3)
+FROM python:3.8-slim
+WORKDIR /app
+COPY . .
 
-### Usage
+RUN apt-get update && apt-get install -y \
+    unixodbc unixodbc-dev odbcinst odbcinst1debian2 libpq-dev gcc && \
+    apt-get install -y gnupg && \
+    apt-get install -y wget && \
+    wget -qO- https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
+    wget -qO- https://packages.microsoft.com/config/debian/10/prod.list > /etc/apt/sources.list.d/mssql-release.list && \
+    apt-get update && \
+    ACCEPT_EULA=Y apt-get install -y msodbcsql18 && \
+    apt-get purge -y --auto-remove wget && \  
+    apt-get clean
 
-To run the application, you simply need to run the `app.py` script in this repository. Once the application starts you should be able to access it locally at `http://127.0.0.1:5000`. Here you will be meet with the following two pages:
+RUN pip install --upgrade pip setuptools
+RUN pip install --trusted-host pypi.python.org -r requirements.txt
+EXPOSE 5000
+CMD ["python", "app.py"]
 
-1. **Order List Page:** Navigate to the "Order List" page to view all existing orders. Use the pagination controls to navigate between pages.
 
-2. **Add New Order Page:** Click on the "Add New Order" tab to access the order form. Complete all required fields and ensure that your entries meet the specified criteria.
+### Build:
 
-## Technology Stack
+docker build -t <image-name> .
 
-- **Backend:** Flask is used to build the backend of the application, handling routing, data processing, and interactions with the database.
+docker images
 
-- **Frontend:** The user interface is designed using HTML, CSS, and JavaScript to ensure a smooth and intuitive user experience.
+### Run:
 
-- **Database:** The application employs an Azure SQL Database as its database system to store order-related data.
+docker run -d -p 30030:5000 <image-name>
+
+docker ps
+docker ps -a
+docker rm <container-id>
+
+docker images -a
+
+docker rmi <image-id>
+
 
 ## Contributors 
 
