@@ -35,7 +35,7 @@ steps:
     kubernetesServiceEndpoint: 'terraform-aks-cluster-sp'
     namespace: 'default'
     command: 'get'
-    arguments: 'svc flask-app-service -n default -o jsonpath="{.status.loadBalancer.ingress[*].ip}"'
+    arguments: svc flask-app-service -n default -o jsonpath="{.status.loadBalancer.ingress[*].ip}"
     secretType: 'dockerRegistry'
     containerRegistryType: 'Azure Container Registry' 
 
