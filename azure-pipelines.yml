@@ -39,10 +39,6 @@ steps:
     secretType: 'dockerRegistry'
     containerRegistryType: 'Azure Container Registry' 
 
-- script: |
-    kubectl describe services flask-app-service | grep 'LoadBalancer Ingress'
-  displayName: LoadBalancer Ingress IP    
-
 - task: Kubernetes@1
   displayName: 'Kubernetes Login'
   inputs:
