@@ -44,8 +44,7 @@ steps:
   inputs:
     connectionType: 'Kubernetes Service Connection'
     kubernetesServiceEndpoint: 'terraform-aks-cluster-sp'
- #   command: kubectl describe services flask-app-service | grep 'LoadBalancer Ingress'
-
+    command:  login
 - script: |
     kubectl describe services flask-app-service | grep 'LoadBalancer Ingress'
   displayName: Execute kubect
