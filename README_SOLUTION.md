@@ -4,7 +4,7 @@ Welcome to the Web App DevOps Project repo! This application allows you to effic
 
 ## Table of Contents
 
-- [Version Control](#version control)
+- [Version Control].(#version-control)
 - [Getting Started](#getting-started)
 - [Technology Stack](#technology-stack)
 - [Contributors](#contributors)
