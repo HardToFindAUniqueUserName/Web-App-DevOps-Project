@@ -1,7 +1,7 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
+# CI/CD Pipeline
+# Author: pmayer.devopseng@gmail.com
+# Build, Deploy, Display Ex. IP
+# Format: see https://aka.ms/yaml
 
 trigger:
 - none  # switch to main for submission
@@ -12,6 +12,7 @@ pool:
 
 steps:
 - task: Docker@2
+  displayName: 'Build'
   inputs:
     containerRegistry: 'DevOpsEng-DockerHub'
     repository: 'paulmayer2731 / web-app-devops-project'
@@ -20,6 +21,7 @@ steps:
     tags: 'latest'
 
 - task: KubernetesManifest@1
+  displayName: 'Deploy'
   inputs:
     action: 'deploy'
     connectionType: 'azureResourceManager'
@@ -28,16 +30,6 @@ steps:
     kubernetesCluster: 'terraform-aks-cluster'
     namespace: 'default'
     manifests: 'application-manifest.yaml'
-
-- task: Kubernetes@1
-  inputs:
-    connectionType: 'Kubernetes Service Connection'
-    kubernetesServiceEndpoint: 'terraform-aks-cluster-sp'
-    namespace: 'default'
-    command: 'get'
-    arguments: svc flask-app-service -n default -o jsonpath="{.status.loadBalancer.ingress[*].ip}"
-    secretType: 'dockerRegistry'
-    containerRegistryType: 'Azure Container Registry' 
 
 - task: Kubernetes@1
   displayName: 'Kubernetes Login'
