@@ -355,6 +355,31 @@ steps:
   displayName: LoadBalancer Ingress IP
 </pre>
 
+### Desployment tests
+ 1. Kubectl can be used to check the ASK deployment, in the usual way:
+    - $ kubectl get namespaces
+    - $ kubectl get deployments -n ~namespace-name~
+    - $ kubectl get services -n ~namespace-name~
+    - $ kubectl get pods-n ~namespace-name~<br>
+ 2. Brows to the service and test application functionality. With the LoadBalancer exposing an external IP address, and that address displayed during CI/CD pipeline run, we can imediately brows to the application and run functional tests.
+
+
+ ## AKS Cluster Monitoring
+ For DevOps, monitoring is a critical practice. It involves continuous tracking, assessment, and management of resources to ensure their performance and availability. Through monitoring we can maintain resiliant, robust infrastructures and applications, we can prevent downtime, and optimize resource usage.
+
+ ### Container Insights
+ Within Azure, we enabled [Container Insights](https://learn.microsoft.com/en-us/azure/azure-monitor/containers/container-insights-overview) for our AKS cluster (terraform-aks-cluster). To accommodate Container Insights, Azure ctreated a Log Analytics Workspace (defaultworkspace-3542213f-7e7a-4dad-aea4-fe30482ed0f3-suk). Within the cluster, Container Insights created a logging workload (ama-logs-rs), as the [Azure Monitor Agent](https://learn.microsoft.com/en-us/azure/azure-monitor/agents/agents-overview).
+
+### Metrics
+Container Insights made data available to the Metrics explorer. Using Metrics, four charts were created and pinned to a private dashboard (Web-App-Dash). The new charts displayed a recent history of: average CPU usage, disck usage (%), average pod count (ready state), bytes read and written (p/s).
+
+### Web-App-Dash
+![Web-App-Dash](./Resources/DashBoard.gif)
+
+
+
+
+
 
 ## Features
 
