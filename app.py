@@ -9,11 +9,11 @@ import os
 # Initialise Flask App
 app = Flask(__name__)
 
-# database connection 
-server = 'devops-project-server.database.windows.net'
-database = 'orders-db'
-username = 'maya'
-password = 'AiCore1237'
+# database connection                                  # KV values
+server = 'devops-project-server.database.windows.net'  # db-server-name
+database = 'orders-db'                                 # database-name
+username = 'maya'                                      # db-server-username
+password = 'AiCore1237'                                # db-server-password
 driver= '{ODBC Driver 18 for SQL Server}'
 
 # Create the connection string

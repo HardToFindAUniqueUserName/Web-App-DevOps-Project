@@ -19,14 +19,15 @@ The repository was forked, and then cloned to a local repository. The repository
 At one point, it was decided to remove a new feature To do this, the main was pulled and branched again. The new branch was rolled back, pushed to the remote repository and remerged into main.
 Through this regiem of continuous incremental updates, a working copy of the code was maintained at all times, and merge conflicts were avoided.
 
-### Key Commands: 
+### Key Commands
+<pre>
  - git clone ~URI-of-repository~
  - git checkout -b ~name-of-new-branch~
  - git branch
  - git add . or git add ~name-of-file(s)-to-be-added~
  - git commit -m "text of meaning full comment"
-  - git push -u origin ~name-of-branch~
- - git pull
+ - git push -u origin ~name-of-branch~
+ - git pull  </pre>
 
 ### Containerisation
 A docker file was added to the repository, to define the image build and the container run.
@@ -396,6 +397,22 @@ A new alert rule was created (Disk Usage Percentage), and two predefines alert r
  - Disk Used Percentage: Proactively detect and address potential disk issues.
 
 An Action Group (AKS-AG) was created to specify actions for the newly defined alerts. Currently, the action group is set to notify pmayer.devopseng@gmail.com, when any of the alert thresholds are breached.
+
+
+### Secret Management
+
+A [Key Vault](https://learn.microsoft.com/en-us/azure/key-vault/general/basic-concepts) (aks-rg-kv) was created to manage secrets (i.e., access credential). On creation a key vault is allocated a unique (to Azure) URI. Our URI is: https<span>://</span>aks-rg-kv.vault.azure.net/. The Key Vault URI is used to access and interact with the resources stored within the Azure Key Vault.
+
+[RBAC](https://learn.microsoft.com/en-us/azure/role-based-access-control/overview) is used to controle access to and management of the Key Vault. So, the Key Vault Administrator role was assigned to user: Paul Mayer.
+
+Four secrets were added to the key vault. These replacing the database access credential, previously hard-coded in the app.py file. When the app.py file is executed, the secret value is assigned to the appropriate variable
+
+| Variable Name  | Secret Name |
+| server | db-server-name |
+| database | database-name |
+| username | db-server-username |
+| password | db-server-password |
+
 
 
 
