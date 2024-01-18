@@ -377,7 +377,25 @@ Container Insights made data available to the Metrics explorer. Using Metrics, f
 ![Web-App-Dash](./Resources/DashBoard.gif)
 
 
+### Log Analytics - Queries
+Within the AKS Cluster Logs, five custome [queries](https://learn.microsoft.com/en-us/azure/azure-monitor/containers/container-insights-log-query) were created and saved.
 
+THe saved queries are:
+ - Average Nodes CPU Usage Percentage per Minute: Capture data on node-level usage at a granular level, with logs recorded per minute.
+ - Average Nodes Memory Usage Percentage per Minute:  Tracking memory usage at node level allows us to detect memory-related performance concerns and efficiently allocate resources.
+ - Pods Counts with Phase: Provides information on the count of pods in different phases (i.e., Pending, Running, or Terminating), offering insights into pod lifecycle management
+ - Find a value in Container Logs Table ('warning'): By search for 'warning' values in container logs, we proactively detect issues or errors within our containers, allowing for prompt troubleshooting and issues resolution.
+ - Monitoring Kubernetes Events: Monitoring Kubernetes events (i.e., pod scheduling, scaling, errors), helps to track overall health and stability of the cluster.
+
+
+### Alerts
+A new alert rule was created (Disk Usage Percentage), and two predefines alert rules (CPU Usage Percentage, Memory Working Set Percentage) were modified, to offer critical alerts for the AKS cluster.
+
+ - CPU Usage Percentage: Monitors CPU usage and triggers an alert when it exceeds a specified threshold.
+ - Memory Working Set Percentage: Monitors memory usage and sends alerts when it crosses a predefined threshold.
+ - Disk Used Percentage: Proactively detect and address potential disk issues.
+
+An Action Group (AKS-AG) was created to specify actions for the newly defined alerts. Currently, the action group is set to notify pmayer.devopseng@gmail.com, when any of the alert thresholds are breached.
 
 
 
