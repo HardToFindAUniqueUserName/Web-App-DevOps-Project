@@ -31,12 +31,12 @@ steps:
     namespace: 'default'
     manifests: 'application-manifest.yaml'
 
-# - task: Kubernetes@1
-#   displayName: 'Kubernetes Login'
-#   inputs:
-#     connectionType: 'Kubernetes Service Connection'
-#     kubernetesServiceEndpoint: 'terraform-aks-cluster-sp'
-#     command:  login
-# - script: |
-#     kubectl describe services flask-app-service | grep 'LoadBalancer Ingress'
-#   displayName: LoadBalancer Ingress IP
+- task: Kubernetes@1
+  displayName: 'Kubernetes Login'
+  inputs:
+    connectionType: 'Kubernetes Service Connection'
+    kubernetesServiceEndpoint: 'terraform-aks-cluster-sp'
+    command:  login
+- script: |
+    kubectl describe services flask-app-service | grep 'LoadBalancer Ingress'
+  displayName: LoadBalancer Ingress IP
