@@ -95,9 +95,6 @@ docker images -a
 docker rmi ~image-id~
 ___
 
-### Sub paragraph <a name="subparagraph1"></a>
-This is a sub paragraph, formatted in heading 3 style
-
 ## Terraform IaC <a name="terraform-iac"></a>
 We need a virtual infrastructure, on which to deploy our application. Terraform is employed to create and manage that infrastructure (as code). 
 
@@ -408,13 +405,19 @@ A [Key Vault](https://learn.microsoft.com/en-us/azure/key-vault/general/basic-co
 Four secrets were added to the key vault. These replacing the database access credential, previously hard-coded in the app.py file. When the app.py file is executed, the secret value is assigned to the appropriate variable
 
 | Variable Name  | Secret Name |
+| ------------- | ------------- |
 | server | db-server-name |
 | database | database-name |
 | username | db-server-username |
 | password | db-server-password |
 
 
-
+### Troubleshooting
+ - Woke up one morning and my cluster was gone.
+ Done just sing the Blues!
+ Having recreated the cluster, remember to renew credentials in the kubectl file. To do this run:
+  - az aks get-credentials --name \<aks-cluster-name\> --resource-group \<resource-group-name\>
+  - az aks get-credentials --name terraform-aks-cluster --resource-group networking-resource-group
 
 ## Features
 
