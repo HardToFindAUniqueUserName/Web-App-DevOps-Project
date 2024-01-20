@@ -411,6 +411,98 @@ Four secrets were added to the key vault. These replacing the database access cr
 | username | db-server-username |
 | password | db-server-password |
 
+### Integrating Azure Key Vault with AKS
+To integrate Key Vault with AKS, we must enable managed identity for the cluster. Then we must assigne the appropriate RBAC role to the identity.
+
+#### [Enabling Managed Identity for AKS:](https://learn.microsoft.com/en-us/azure/aks/use-managed-identity)
+Enable a managed identity for an existing AKS cluster:
+
+az aks update --resource-group \<resource-group\> --name \<aks-cluster-name\> --enable-managed-identity
+
+In our case:
+
+az aks update --resource-group networking-resource-group --name terraform-aks-cluster --enable-managed-identity
+
+When managed identity is enables, the clientId is printed out (ammongst other information). To retrieve the clientId, retrospectively, we can run:
+
+az aks show --resource-group \<resource-group\> --name \<aks-cluster-name\> --query identityProfile
+
+In our case:
+
+az aks show --resource-group networking-resource-group --name terraform-aks-cluster --query identityProfile
+
+#### Assign KV Permissions
+
+Assigning Key Vault Permissions:  
+
+Assign "Key Vault Secrets Officer" role to Managed Identity:
+
+az role assignment create --role "Key Vault Secrets Officer" --assignee \<managed-identity-client-id\> --scope /subscriptions/\<subscription-id\>/resourceGroups/\<resource-group\>/providers/Microsoft.KeyVault/vaults/\<key-vault-name\>
+
+In our case:
+
+az role assignment create --role "Key Vault Secrets Officer" --assignee 9d1afaf4-dc19-4743-8e70-b27a8a5f6b37 --scope /subscriptions/3542213f-7e7a-4dad-aea4-fe30482ed0f3/resourceGroups/aks-rg/providers/Microsoft.KeyVault/vaults/aks-rg-kv
+
+
+### Addatting the Code to Use KV
+from azure.identity import ManagedIdentityCredential
+from azure.keyvault.secrets import SecretClient
+
+Provide connection URL to Key Vault:
+key_vault_url = \<key vault URL from key vault overview page\>
+
+Set up Azure Key Vault client with Managed Identity
+credential = ManagedIdentityCredential()
+secret_client = SecretClient(vault_url=key_vault_url, credential=credential)
+
+Access the secret values from Key Vault
+secret = secret_client.get_secret("secret-name")
+
+Access the secret values
+secret_value = secret.value
+
+# Our our aditional application code looks like this:
+<pre>
+from azure.identity import ManagedIdentityCredential
+from azure.keyvault.secrets import SecretClient
+
+# Initialise Flask App
+app = Flask(__name__)
+
+# Provide connection URL to Key Vault:
+key_vault_url = https://aks-rg-kv.vault.azure.net/
+
+# Set up Azure Key Vault client with Managed Identity
+credential = ManagedIdentityCredential()
+secret_client = SecretClient(vault_url=key_vault_url, credential=credential)
+
+# Access the secret values from Key Vault
+secret = secret_client.get_secret("db-server-name")
+
+# Access the secret values
+secret_value = secret.value
+
+# database connection                                             # KV keys             # Original vaules
+server = secret_value                                             # db-server-name      # 'devops-project-server.database.windows.net'
+# Now directly:
+database = secret_client.get_secret("database-name").value        # database-name       # 'orders-db'
+username = secret_client.get_secret("db-server-username").value   # db-server-username  # 'maya'
+password = secret_client.get_secret("db-server-password").value   # db-server-password  # 'AiCore1237' 
+driver= '{ODBC Driver 18 for SQL Server}'
+</pre>
+
+### Azure Identity and Azure Key Vault libraries
+In order to run the new code, our application requires access to the Azure Identity and Azure Key Vault libraries. So, they need to be installed when the application container is built. The commands to install these libraries will be fed to the Dockerfile by the requirements.txt file.
+
+New requirements.txt file:
+<pre>
+flask==2.2.2
+pyodbc==4.0.39
+SQLAlchemy==2.0.21
+werkzeug==2.2.3
+azure-identity
+azure-keyvault-secrets
+</pre>
 
 ### Troubleshooting
  - Woke up one morning and my cluster was gone.
