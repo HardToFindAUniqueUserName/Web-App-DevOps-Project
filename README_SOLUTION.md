@@ -11,7 +11,11 @@ We will consider each stage in detail.
  - [Terraform IaC](#terraform-iac)
  - [Kubernetes container orchestration](#kubernetes-container-orchestration)
  - [Azure CI/CD pipelines](#azure-cicd-pipelines)
- - [YAML configuration files ](#yaml-configuration-files)
+ - [AKS Cluster Monitoring](#aks-cluster-monitoring)
+ - [Secret Management](#secret-management)
+ - [Troubleshooting](#troubleshooting)
+ - [Contributors](#contributors)
+ - [License](#license)
 
 ## GitHub version control <a name="github-version-control"></a>
 The application files can be found on the [GitHub repository](https://github.com/maya-a-iuga/Web-App-DevOps-Project).
@@ -306,7 +310,7 @@ The Build (CI) and Deploy (CD) were integrated into a single CI/CD pipeline, des
 To simplify testing, I added a task to the end of the YAML file. The task would display the external IP address of the deployed service.
 
 
-## CI/CD YAML file<a name="yaml-configuration-files"></a>
+### CI/CD YAML file
 YAML file describing the CI/CD pipeline:
 <pre>
 # CI/CD Pipeline
@@ -362,7 +366,7 @@ steps:
  2. Brows to the service and test application functionality. With the LoadBalancer exposing an external IP address, and that address displayed during CI/CD pipeline run, we can imediately brows to the application and run functional tests.
 
 
- ## AKS Cluster Monitoring
+ ## AKS Cluster Monitoring <a name="aks-cluster-monitoring"></a>
  For DevOps, monitoring is a critical practice. It involves continuous tracking, assessment, and management of resources to ensure their performance and availability. Through monitoring we can maintain resiliant, robust infrastructures and applications, we can prevent downtime, and optimize resource usage.
 
  ### Container Insights
@@ -396,7 +400,7 @@ A new alert rule was created (Disk Usage Percentage), and two predefines alert r
 An Action Group (AKS-AG) was created to specify actions for the newly defined alerts. Currently, the action group is set to notify pmayer.devopseng@gmail.com, when any of the alert thresholds are breached.
 
 
-### Secret Management
+## Secret Management <a name="secret-management"></a> 
 
 A [Key Vault](https://learn.microsoft.com/en-us/azure/key-vault/general/basic-concepts) (aks-rg-kv) was created to manage secrets (i.e., access credential). On creation a key vault is allocated a unique (to Azure) URI. Our URI is: https<span>://</span>aks-rg-kv.vault.azure.net/. The Key Vault URI is used to access and interact with the resources stored within the Azure Key Vault.
 
@@ -461,7 +465,7 @@ secret = secret_client.get_secret("secret-name")
 Access the secret values
 secret_value = secret.value
 
-# Our our aditional application code looks like this:
+ Our our aditional application code looks like this:
 <pre>
 from azure.identity import ManagedIdentityCredential
 from azure.keyvault.secrets import SecretClient
@@ -470,7 +474,7 @@ from azure.keyvault.secrets import SecretClient
 app = Flask(__name__)
 
 # Provide connection URL to Key Vault:
-key_vault_url = https://aks-rg-kv.vault.azure.net/
+key_vault_url = "https://aks-rg-kv.vault.azure.net/"
 
 # Set up Azure Key Vault client with Managed Identity
 credential = ManagedIdentityCredential()
@@ -504,112 +508,81 @@ azure-identity
 azure-keyvault-secrets
 </pre>
 
-### Troubleshooting
- - Woke up one morning and my cluster was gone.
- Done just sing the Blues!
- Having recreated the cluster, remember to renew credentials in the kubectl file. To do this run:
-  - az aks get-credentials --name \<aks-cluster-name\> --resource-group \<resource-group-name\>
+### Deployment and Test
+The modified application was deployed through the azure-pipelines.yml, build/deploy pipeline.
+
+Application thoroughly tested via web-browser.
+ - Pages traversed
+ - Page contents checked
+ - New order added
+
+Here we see the final deployment of the order management service.
+![FinalDeployment](./Resources/FinalDeployment.gif)
+
+## Troubleshooting <a name="troubleshooting"></a>
+Woke up one morning and my cluster was gone.
+ Done just sing the Blues! <br>
+Having recreated the cluster, remember to renew credentials in the kubectl file. To do this run:
+  - az aks get-credentials --name \<aks-cluster-name\> --resource-group \<resource-group-name\><br>
+In our case:<br>
   - az aks get-credentials --name terraform-aks-cluster --resource-group networking-resource-group
 
-## Features
+Scripts that access the service container (like our Kubernetes@1 task that displays the external IP address of the service) will need to be updated with new access credentials. So, rebuild the Kubernetes@1 login task. However, this time specify connectionType as 'Azure Resource Manager' with Managed Identity authentication, rather than 'Kubernetes Service Connection'.
 
-- **Order List:** View a comprehensive list of orders including details like date UUID, user ID, card number, store code, product code, product quantity, order date, and shipping date.
-  
-![Screenshot 2023-08-31 at 15 48 48](https://github.com/maya-a-iuga/Web-App-DevOps-Project/assets/104773240/3a3bae88-9224-4755-bf62-567beb7bf692)
+Final pipeline file is here:
+<pre>
+# CI/CD Pipeline
+# Author: pmayer.devopseng@gmail.com
+# Build, Deploy, Display Ex. IP
+# Format: see https://aka.ms/yaml
 
-- **Pagination:** Easily navigate through multiple pages of orders using the built-in pagination feature.
-  
-![Screenshot 2023-08-31 at 15 49 08](https://github.com/maya-a-iuga/Web-App-DevOps-Project/assets/104773240/d92a045d-b568-4695-b2b9-986874b4ed5a)
+trigger:
+- none  # switch to main for submission
 
-- **Add New Order:** Fill out a user-friendly form to add new orders to the system with necessary information.
-  
-![Screenshot 2023-08-31 at 15 49 26](https://github.com/maya-a-iuga/Web-App-DevOps-Project/assets/104773240/83236d79-6212-4fc3-afa3-3cee88354b1a)
+pool:
+  vmImage: ubuntu-latest
+  parallel: 1
 
-- **Data Validation:** Ensure data accuracy and completeness with required fields, date restrictions, and card number validation.
+steps:
+- task: Docker@2
+  displayName: 'Build'
+  inputs:
+    containerRegistry: 'DevOpsEng-DockerHub'
+    repository: 'paulmayer2731 / web-app-devops-project'
+    command: 'buildAndPush'
+    Dockerfile: '**/Dockerfile'
+    tags: 'latest'
 
-# web-app-devops-project
-The web-app-devops-project is an application provided by AICore as a component of the end-to-end pipeline project.
-The application (a database management interface) is only relevant for the purpose of the project.
-Key project stages are: version control, containerisation, 
-Each stage will be described in more detail 
-___
-## Version Control
-The application files can be found on a GitHub repository (https://github.com/maya-a-iuga/Web-App-DevOps-Project).
-The repository was forked, and then cloned to a local repository. The repository was branched to add features and pushed back to the remote repository and merged to main. Main was subsequently pulled, and branched again. The new branch was rolled back, pushed to the remote repository and remerged into main.
+- task: KubernetesManifest@1
+  displayName: 'Deploy'
+  inputs:
+    action: 'deploy'
+    connectionType: 'azureResourceManager'
+    azureSubscriptionConnection: 'Paul Mayer DevOps(3542213f-7e7a-4dad-aea4-fe30482ed0f3)'
+    azureResourceGroup: 'networking-resource-group'
+    kubernetesCluster: 'terraform-aks-cluster'
+    namespace: 'default'
+    manifests: 'application-manifest.yaml'
 
-### Key Commands: 
- - git clone <URI-of-repository>
- - git checkout -b <name-of-new-branch>
- - git branch
- - git add . or git add <name-of-file(s)-to-be-added>
- - git commit -m "text of meaning full comment"
-  - git push -u origin <name-of-branch>
- - git pull
-___
-## Containerisation
-A docker file was added to the repository, to define the image build and the container run.
+- task: Kubernetes@1
+  inputs:
+    connectionType: 'Azure Resource Manager'
+    azureSubscriptionEndpoint: 'Paul Mayer DevOps(3542213f-7e7a-4dad-aea4-fe30482ed0f3)'
+    azureResourceGroup: 'networking-resource-group'
+    kubernetesCluster: 'terraform-aks-cluster'
+    namespace: 'default'
+    command: 'login'
+- script: |
+    kubectl describe services flask-app-service | grep 'LoadBalancer Ingress'
+  displayName: LoadBalancer Ingress IP
+</pre>
 
-### Dockerfile:
-
-FROM python:3.8-slim
-
-// # Step 2 - Set the working directory in the container
-WORKDIR /app
-
-// # Step 3 Copy the application files in the container
-COPY . .
-
-// # Install system dependencies and ODBC driver
-RUN apt-get update && apt-get install -y \
-    unixodbc unixodbc-dev odbcinst odbcinst1debian2 libpq-dev gcc && \
-    apt-get install -y gnupg && \
-    apt-get install -y wget && \
-    wget -qO- https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
-    wget -qO- https://packages.microsoft.com/config/debian/10/prod.list > /etc/apt/sources.list.d/mssql-release.list && \
-    apt-get update && \
-    ACCEPT_EULA=Y apt-get install -y msodbcsql18 && \
-    apt-get purge -y --auto-remove wget && \  
-    apt-get clean
-
-// # Install pip and setuptools
-RUN pip install --upgrade pip setuptools
-
-// # Step 4 - Install Python packages specified in requirements.txt
-// # RUN pip install -r requirements.txt
-RUN pip install --trusted-host pypi.python.org -r requirements.txt
-
-// # Step 5 - Expose port 
-EXPOSE 5000
-
-// # Step 6 - Define Startup Command
-// # ENTRYPOINT ["python", "app.py"]
-CMD ["python", "app.py"]
-// # CMD ["flask", "run"]
-
-
-### Build:
-
-docker build -t <image-name> .
-
-docker images
-
-### Run:
-
-docker run -d -p 30030:5000 <image-name>
-
-docker ps
-docker ps -a
-docker rm <container-id>
-
-docker images -a
-
-docker rmi <image-id>
-
-
-## Contributors 
+## Contributors <a name="contributors"></a>
 
 - [Maya Iuga]([https://github.com/yourusername](https://github.com/maya-a-iuga))
+- Paul Mayer
 
-## License
+## License <a name="license"></a>
 
-This project is licensed under the MIT License. For more details, refer to the [LICENSE](LICENSE) file.
+The project is licensed under the MIT License. For more details, refer to the [LICENSE](LICENSE) file.
+The project solution falls under the same licensing as the project presented by AiCore.
