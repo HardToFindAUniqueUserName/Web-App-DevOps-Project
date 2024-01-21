@@ -31,6 +31,18 @@ steps:
     namespace: 'default'
     manifests: 'application-manifest.yaml'
 
+- task: Kubernetes@1
+  inputs:
+    connectionType: 'Azure Resource Manager'
+    azureSubscriptionEndpoint: 'Paul Mayer DevOps(3542213f-7e7a-4dad-aea4-fe30482ed0f3)'
+    azureResourceGroup: 'networking-resource-group'
+    kubernetesCluster: 'terraform-aks-cluster'
+    namespace: 'default'
+    command: 'login'
+- script: |
+    kubectl describe services flask-app-service | grep 'LoadBalancer Ingress'
+  displayName: LoadBalancer Ingress IP
+
 # - task: Kubernetes@1
 #   displayName: 'Kubernetes Login'
 #   inputs:
