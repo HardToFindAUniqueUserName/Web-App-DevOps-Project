@@ -12,7 +12,7 @@ from azure.keyvault.secrets import SecretClient
 app = Flask(__name__)
 
 # Provide connection URL to Key Vault:
-key_vault_url = https://aks-rg-kv.vault.azure.net/
+key_vault_url = "https://aks-rg-kv.vault.azure.net/"
 
 # Set up Azure Key Vault client with Managed Identity
 credential = ManagedIdentityCredential()
