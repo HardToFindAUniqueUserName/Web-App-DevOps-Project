@@ -8,8 +8,8 @@ import os
 from azure.identity import ManagedIdentityCredential
 from azure.keyvault.secrets import SecretClient
 
-# Initialise Flask App
-app = Flask(__name__)
+# # Initialise Flask App
+# app = Flask(__name__)
 
 # Provide connection URL to Key Vault:
 key_vault_url = "https://aks-rg-kv.vault.azure.net/"
@@ -31,6 +31,9 @@ database = secret_client.get_secret("database-name").value        # database-nam
 username = secret_client.get_secret("db-server-username").value   # db-server-username  # 'maya'
 password = secret_client.get_secret("db-server-password").value   # db-server-password  # 'AiCore1237' 
 driver= '{ODBC Driver 18 for SQL Server}'
+
+# Initialise Flask App
+app = Flask(__name__)
 
 # Create the connection string
 connection_string=f'Driver={driver};\
