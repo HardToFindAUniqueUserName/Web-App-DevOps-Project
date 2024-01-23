@@ -371,7 +371,7 @@ steps:
     - $ kubectl get deployments -n \<namespace-name\>
     - $ kubectl get services -n \<namespace-name\>
     - $ kubectl get pods-n \<namespace-name\> <br>
- 2. Brows to the service and test application functionality. With the LoadBalancer exposing an external IP address, and that address displayed during CI/CD pipeline run, we can immediately brows to the application and run functional tests.
+ 2. Brows to the service and test application functionality. With the LoadBalancer exposing an external IP address, and that address displayed during CI/CD pipeline run, we can immediately browse to the application and run functional tests.
 
 ___
  ## AKS Cluster Monitoring <a name="aks-cluster-monitoring"></a>
@@ -457,8 +457,9 @@ In our case:
 
 
 ### Adding the Code to Use KV
-from azure.identity import ManagedIdentityCredential
-from azure.keyvault.secrets import SecretClient
+From azure.identity import ManagedIdentityCredential
+
+From azure.keyvault.secrets import SecretClient
 
 Provide connection URL to Key Vault:
 key_vault_url = \<key vault URL from key vault overview page\>
@@ -519,20 +520,21 @@ azure-keyvault-secrets
 ### Deployment and Test
 The modified application was deployed through the azure-pipelines.yml, build/deploy pipeline.
 
-Application thoroughly tested via web-browser.
+The application was thoroughly tested via web-browser:
  - Pages traversed
  - Page contents checked
  - New order added
 
 Here we see the final deployment of the order management service.
+
 ![FinalDeployment](https://github.com/HardToFindAUniqueUserName/Web-App-DevOps-Project/blob/main/Resources/FinalDeployment.GIF)
 
 
-
-## Deployment Architecture
+### Deployment Architecture
 Herewith the architecture of the complete deployment:
 ![DevOps Pipeline Architecture](https://github.com/HardToFindAUniqueUserName/Web-App-DevOps-Project/assets/151922337/171ea9ae-a649-4382-9a2c-54ae39850622)
 
+___
 ## Troubleshooting <a name="troubleshooting"></a>
 Woke up one morning and my cluster was gone.
  Done just sing the Blues! <br>
@@ -634,11 +636,13 @@ steps:
   displayName: LoadBalancer Ingress IP
 </pre>
 
+___
 ## Contributors <a name="contributors"></a>
 
 - [Maya Iuga]([https://github.com/yourusername](https://github.com/maya-a-iuga))
 - Paul Mayer
 
+___
 ## License <a name="license"></a>
 
 The project is licensed under the MIT License. For more details, refer to the [LICENSE](LICENSE) file.

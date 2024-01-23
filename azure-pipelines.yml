@@ -4,7 +4,7 @@
 # Format: see https://aka.ms/yaml
 
 trigger:
-- none  # switch to main for submission
+- none  # - main   # FOR SUBMISSION, THIS SHOULD BE SWITCHED TO MAIN #
 
 pool:
   vmImage: ubuntu-latest
