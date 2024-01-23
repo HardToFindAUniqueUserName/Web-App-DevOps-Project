@@ -384,7 +384,8 @@ steps:
 Container Insights made data available to the Metrics explorer. Using Metrics, four charts were created and pinned to a private dashboard (Web-App-Dash). The new charts displayed a recent history of: average CPU usage, disck usage (%), average pod count (ready state), bytes read and written (p/s).
 
 ### Web-App-Dash
-![Web-App-Dash](./Resources/DashBoard.gif)
+
+![Web-App-Dash](https://github.com/HardToFindAUniqueUserName/Web-App-DevOps-Project/blob/main/Resources/DashBoard.GIF)
 
 
 ### Log Analytics - Queries
@@ -526,11 +527,9 @@ Application thoroughly tested via web-browser.
 
 Here we see the final deployment of the order management service.
 
-![Deployment](https://github.com/HardToFindAUniqueUserName/Web-App-DevOps-Project/blob/main/Resources/DashBoard.GIF)
-
 ![FinalDeployment](https://github.com/HardToFindAUniqueUserName/Web-App-DevOps-Project/blob/main/Resources/FinalDeployment.GIF)
 
-![Web-App-Dash](/Resources/DashBoard.gif)
+
 
 ## Deployment Architecture
 Herewith the architecture of the complete deployment:
