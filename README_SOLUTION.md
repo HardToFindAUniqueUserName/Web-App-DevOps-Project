@@ -384,7 +384,6 @@ steps:
 Container Insights made data available to the Metrics explorer. Using Metrics, four charts were created and pinned to a private dashboard (Web-App-Dash). The new charts displayed a recent history of: average CPU usage, disck usage (%), average pod count (ready state), bytes read and written (p/s).
 
 ### Web-App-Dash
-
 ![Web-App-Dash](https://github.com/HardToFindAUniqueUserName/Web-App-DevOps-Project/blob/main/Resources/DashBoard.GIF)
 
 
@@ -526,14 +525,13 @@ Application thoroughly tested via web-browser.
  - New order added
 
 Here we see the final deployment of the order management service.
-
 ![FinalDeployment](https://github.com/HardToFindAUniqueUserName/Web-App-DevOps-Project/blob/main/Resources/FinalDeployment.GIF)
 
 
 
 ## Deployment Architecture
 Herewith the architecture of the complete deployment:
-[DevOps Pipeline Architecture.pdf](https://github.com/HardToFindAUniqueUserName/Web-App-DevOps-Project/files/14022921/DevOps.Pipeline.Architecture.pdf)
+![DevOps Pipeline Architecture](https://github.com/HardToFindAUniqueUserName/Web-App-DevOps-Project/assets/151922337/171ea9ae-a649-4382-9a2c-54ae39850622)
 
 ## Troubleshooting <a name="troubleshooting"></a>
 Woke up one morning and my cluster was gone.
