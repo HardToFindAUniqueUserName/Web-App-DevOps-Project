@@ -86,17 +86,17 @@ docker images
 
 ### Run:
 
-docker run -d -p 30030:5000 ~image-name~
+docker run -d -p 30030:5000 \<image-name\>
 
 ### Manage:
 
 docker ps
 docker ps -a
-docker rm ~container-id~
+docker rm \<container-id\>
 
 docker images -a
 
-docker rmi ~image-id~
+docker rmi \<image-id\>
 ___
 
 ## Terraform IaC <a name="terraform-iac"></a>
