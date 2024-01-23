@@ -80,7 +80,7 @@ CMD ["python", "app.py"]
 
 ### Build:
 
-docker build -t ~image-name~ .
+docker build -t  \<image-name\> .
 
 docker images
 
