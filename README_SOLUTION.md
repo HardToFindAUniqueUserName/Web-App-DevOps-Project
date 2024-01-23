@@ -21,7 +21,7 @@ We will consider each stage in detail.
 The application files can be found on the [GitHub repository](https://github.com/maya-a-iuga/Web-App-DevOps-Project).
 The repository was forked, and then cloned to a local repository. The repository was branched to add features and pushed back to the remote repository and merged to main. Main was subsequently pulled, and branched again, as features and files were added. 
 At one point, it was decided to remove a new feature. To do this, the main was pulled and branched again. The new branch was rolled back, pushed to the remote repository and remerged into main.
-Through this regiem of continuous incremental updates, a working copy of the code was maintained at all times, and merge conflicts were avoided.
+Through this regime of continuous incremental updates, a working copy of the code was maintained at all times, and merge conflicts were avoided.
 
 ### Key Commands
 <pre>
@@ -102,7 +102,7 @@ ___
 ## Terraform IaC <a name="terraform-iac"></a>
 We need a virtual infrastructure, on which to deploy our application. Terraform is employed to create and manage that infrastructure (as code). 
 
-Terraform employes modular configuration files to enhance readability and promote code reuse. The structure of our files is shown below:
+Terraform employs modular configuration files to enhance readability and promote code reuse. The structure of our files is shown below:
 
 Web-App-DevOps-TerraformFile <br>
 ├── main.tf <br>
@@ -119,7 +119,7 @@ Web-App-DevOps-TerraformFile <br>
 
 NOTE: The gitignore file (.gitignore) is not part of the Terraform configuration file structure. However, it is of critical importance, at this point. So, is included for completeness.
 
-### Ititialise the Terraform workspace
+### Initialise the Terraform workspace
 Having created a preliminary file structure, the next action is to run [terraform init](https://developer.hashicorp.com/terraform/cli/commands/init). The terraform init command sets up the backend, downloads the necessary provider plugins, and initializes the state of the Terraform configuration. In doing so, it initialises a Terraform working directory (.terraform), and a number of working files. Some of the files in this directory are large, and cannot be pushed to the GitHub repository. The Terraform working directory/files should be included in the .gitignore file before attempting to push configuration files to GitHub. Include in .gitignore: *.terraform/ , *.terraform, *.tfstate
 
 ### Modules
@@ -186,7 +186,7 @@ To hide sensative access credentials (like the provider client id and client sec
 
 Our development environment is running on Windows 10. So, [Windows environmental variables](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_environment_variables?view=powershell-7.4) were declared as TF_VAR_variablename (i.e., TF_VAR_client_id). 
 
-Variables for the sensative access credentials are declared and used as normal. They are declared 'sensative', with no default value. Terraform aquires the environmental key:value objects from the underlying OS. 
+Variables for the sensitive access credentials are declared and used as normal. They are declared 'sensitive', with no default value. Terraform acquires the environmental key:value objects from the underlying OS. 
 
 
 ### terraform apply
@@ -289,7 +289,7 @@ Three service type options offer different levels of access:
  To simplify deployment testing, we have implemented LoadBalancer as the service type.<br>
 
  To allow global, limitless access, we could provision:
- - Globaly unique domain names, for use on the internet.
+ - Globally unique domain names, for use on the internet.
  - An Azure application-gateway. The app gateway configures as a Web Application Firewall.
  - An ingress controller (resource defined in .yaml file, to anchor domain names).
  - A modified NSG to allow ingress from a range of authorised users.
@@ -365,30 +365,30 @@ steps:
   displayName: LoadBalancer Ingress IP
 </pre>
 
-### Desployment tests
+### Deployment tests
  1. Kubectl can be used to check the ASK deployment, in the usual way:
     - $ kubectl get namespaces
     - $ kubectl get deployments -n \<namespace-name\>
     - $ kubectl get services -n \<namespace-name\>
     - $ kubectl get pods-n \<namespace-name\> <br>
- 2. Brows to the service and test application functionality. With the LoadBalancer exposing an external IP address, and that address displayed during CI/CD pipeline run, we can imediately brows to the application and run functional tests.
+ 2. Brows to the service and test application functionality. With the LoadBalancer exposing an external IP address, and that address displayed during CI/CD pipeline run, we can immediately brows to the application and run functional tests.
 
 ___
  ## AKS Cluster Monitoring <a name="aks-cluster-monitoring"></a>
- For DevOps, monitoring is a critical practice. It involves continuous tracking, assessment, and management of resources to ensure their performance and availability. Through monitoring we can maintain resiliant, robust infrastructures and applications; we can prevent downtime, and optimize resource usage.
+ For DevOps, monitoring is a critical practice. It involves continuous tracking, assessment, and management of resources to ensure their performance and availability. Through monitoring we can maintain resilient, robust infrastructures and applications; we can prevent downtime, and optimize resource usage.
 
  ### Container Insights
- Within Azure, we enabled [Container Insights](https://learn.microsoft.com/en-us/azure/azure-monitor/containers/container-insights-overview) for our AKS cluster (terraform-aks-cluster). To accommodate Container Insights, Azure ctreated a Log Analytics Workspace (defaultworkspace-3542213f-7e7a-4dad-aea4-fe30482ed0f3-suk). Within the cluster, Container Insights created a logging workload (ama-logs-rs), as the [Azure Monitor Agent](https://learn.microsoft.com/en-us/azure/azure-monitor/agents/agents-overview).
+ Within Azure, we enabled [Container Insights](https://learn.microsoft.com/en-us/azure/azure-monitor/containers/container-insights-overview) for our AKS cluster (terraform-aks-cluster). To accommodate Container Insights, Azure created a Log Analytics Workspace (defaultworkspace-3542213f-7e7a-4dad-aea4-fe30482ed0f3-suk). Within the cluster, Container Insights created a logging workload (ama-logs-rs), as the [Azure Monitor Agent](https://learn.microsoft.com/en-us/azure/azure-monitor/agents/agents-overview).
 
 ### Metrics
-Container Insights made data available to the Metrics explorer. Using Metrics, four charts were created and pinned to a private dashboard (Web-App-Dash). The new charts displayed a recent history of: average CPU usage, disck usage (%), average pod count (ready state), bytes read and written (p/s).
+Container Insights made data available to the Metrics explorer. Using Metrics, four charts were created and pinned to a private dashboard (Web-App-Dash). The new charts displayed a recent history of: average CPU usage, disk usage (%), average pod count (ready state), bytes read and written (p/s).
 
 ### Web-App-Dash
 ![Web-App-Dash](https://github.com/HardToFindAUniqueUserName/Web-App-DevOps-Project/blob/main/Resources/DashBoard.GIF)
 
 
 ### Log Analytics - Queries
-Within the AKS Cluster Logs, five custome [queries](https://learn.microsoft.com/en-us/azure/azure-monitor/containers/container-insights-log-query) were created and saved.
+Within the AKS Cluster Logs, five custom [queries](https://learn.microsoft.com/en-us/azure/azure-monitor/containers/container-insights-log-query) were created and saved.
 
 The saved queries are:
  - Average Nodes CPU Usage Percentage per Minute: Capture data on node-level usage at a granular level, with logs recorded per minute.
@@ -412,9 +412,9 @@ ___
 
 A [Key Vault](https://learn.microsoft.com/en-us/azure/key-vault/general/basic-concepts) (aks-rg-kv) was created to manage secrets (i.e., access credential). On creation a key vault is allocated a unique (to Azure) URI. Our URI is: https<span>://</span>aks-rg-kv.vault.azure.net/. The Key Vault URI is used to access and interact with the resources stored within the Azure Key Vault.
 
-[RBAC](https://learn.microsoft.com/en-us/azure/role-based-access-control/overview) is used to controle access to and management of the Key Vault. So, the Key Vault Administrator role was assigned to user: Paul Mayer.
+[RBAC](https://learn.microsoft.com/en-us/azure/role-based-access-control/overview) is used to control access to and management of the Key Vault. So, the Key Vault Administrator role was assigned to user: Paul Mayer.
 
-Four secrets were added to the key vault. These replacing the database access credential, previously hard-coded in the app.py file. When the app.py file is executed, the secret value is assigned to the appropriate variable
+Four secrets were added to the key vault. These replacing the database access credential, previously hard-coded in the app.py file. When the app.py file is executed, the secret value is assigned to the appropriate variable.
 
 | Variable Name  | Secret Name |
 | ------------- | ------------- |
@@ -424,7 +424,7 @@ Four secrets were added to the key vault. These replacing the database access cr
 | password | db-server-password |
 
 ### Integrating Azure Key Vault with AKS
-To integrate Key Vault with AKS, we must enable managed identity for the cluster. Then we must assigne the appropriate RBAC role to the identity.
+To integrate Key Vault with AKS, we must enable managed identity for the cluster. Then we must assign the appropriate RBAC role to the identity.
 
 #### [Enabling Managed Identity for AKS:](https://learn.microsoft.com/en-us/azure/aks/use-managed-identity)
 Enable a managed identity for an existing AKS cluster:
@@ -435,7 +435,7 @@ In our case:
 
  - az aks update --resource-group networking-resource-group --name terraform-aks-cluster --enable-managed-identity
 
-When managed identity is enables, the clientId is printed out (ammongst other information). To retrieve the clientId, retrospectively, we can run:
+When managed identity is enables, the clientId is printed out (amongst other information). To retrieve the clientId, retrospectively, we can run:
 
  - az aks show --resource-group \<resource-group\> --name \<aks-cluster-name\> --query identityProfile
 
@@ -456,7 +456,7 @@ In our case:
  - az role assignment create --role "Key Vault Secrets Officer" --assignee 9d1afaf4-dc19-4743-8e70-b27a8a5f6b37 --scope /subscriptions/3542213f-7e7a-4dad-aea4-fe30482ed0f3/resourceGroups/aks-rg/providers/Microsoft.KeyVault/vaults/aks-rg-kv
 
 
-### Addatting the Code to Use KV
+### Adding the Code to Use KV
 from azure.identity import ManagedIdentityCredential
 from azure.keyvault.secrets import SecretClient
 
@@ -473,7 +473,7 @@ secret = secret_client.get_secret("secret-name")
 Access the secret values
 secret_value = secret.value
 
- Our our aditional application code looks like this:
+ Our additional application code looks like this:
 <pre>
 from azure.identity import ManagedIdentityCredential
 from azure.keyvault.secrets import SecretClient
@@ -494,7 +494,7 @@ secret = secret_client.get_secret("db-server-name")
 # Access the secret values
 secret_value = secret.value
 
-# database connection                                             # KV keys             # Original vaules
+# database connection                                             # KV keys             # Original values
 server = secret_value                                             # db-server-name      # 'devops-project-server.database.windows.net'
 # Now directly:
 database = secret_client.get_secret("database-name").value        # database-name       # 'orders-db'
