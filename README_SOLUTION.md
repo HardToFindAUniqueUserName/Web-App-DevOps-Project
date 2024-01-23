@@ -20,7 +20,7 @@ We will consider each stage in detail.
 ## GitHub version control <a name="github-version-control"></a>
 The application files can be found on the [GitHub repository](https://github.com/maya-a-iuga/Web-App-DevOps-Project).
 The repository was forked, and then cloned to a local repository. The repository was branched to add features and pushed back to the remote repository and merged to main. Main was subsequently pulled, and branched again, as features and files were added. 
-At one point, it was decided to remove a new feature To do this, the main was pulled and branched again. The new branch was rolled back, pushed to the remote repository and remerged into main.
+At one point, it was decided to remove a new feature. To do this, the main was pulled and branched again. The new branch was rolled back, pushed to the remote repository and remerged into main.
 Through this regiem of continuous incremental updates, a working copy of the code was maintained at all times, and merge conflicts were avoided.
 
 ### Key Commands
@@ -97,8 +97,8 @@ docker rm \<container-id\>
 docker images -a
 
 docker rmi \<image-id\>
-___
 
+___
 ## Terraform IaC <a name="terraform-iac"></a>
 We need a virtual infrastructure, on which to deploy our application. Terraform is employed to create and manage that infrastructure (as code). 
 
@@ -197,7 +197,7 @@ These Terraform CLI commands are used to deploy and manage our [IaC:](https://de
 
  Having applied the IaC, use the [Kubernetes CLI](https://kubernetes.io/docs/reference/kubectl/) (kubectl) to review the deployment.
 
-
+___
 ## Kubernetes container orchestration <a name="kubernetes-container-orchestration"></a>
 With IaC in place we can now deploy our service (application). This is done through an application manifest file (application-manifest.yaml).
 
@@ -294,7 +294,7 @@ Three service type options offer different levels of access:
  - An ingress controller (resource defined in .yaml file, to anchor domain names).
  - A modified NSG to allow ingress from a range of authorised users.
 
-
+___
 ## Azure CI/CD pipelines <a name="azure-cicd-pipelines"></a>
 Azure DevOps was employed to facilitate continuous integration (CI) of code and continuous deployment (CD) of service. Thus, a CI/CD pipeline was created. 
 
@@ -312,7 +312,7 @@ The pipeline would:
  - Deploy the image to the AKS IaC, per the application manifest file (application-manifest.yaml).
 </a><br>
 
-The DockerHub service connection allowed the pipeline to pull the new container image from the container registry. A service connection was also created to AKS, allowing service deployment.
+The DockerHub service connection allows the pipeline to pull the new container image from the container registry. A service connection was also created to AKS, allowing service deployment.
 
 The Build (CI) and Deploy (CD) were integrated into a single CI/CD pipeline, described in a YAML file (azure-pipelines.yaml).<br>
 To simplify testing, I added a task to the end of the YAML file. The task would display the external IP address of the deployed service.
@@ -368,14 +368,14 @@ steps:
 ### Desployment tests
  1. Kubectl can be used to check the ASK deployment, in the usual way:
     - $ kubectl get namespaces
-    - $ kubectl get deployments -n ~namespace-name~
-    - $ kubectl get services -n ~namespace-name~
-    - $ kubectl get pods-n ~namespace-name~<br>
+    - $ kubectl get deployments -n \<namespace-name\>
+    - $ kubectl get services -n \<namespace-name\>
+    - $ kubectl get pods-n \<namespace-name\> <br>
  2. Brows to the service and test application functionality. With the LoadBalancer exposing an external IP address, and that address displayed during CI/CD pipeline run, we can imediately brows to the application and run functional tests.
 
-
+___
  ## AKS Cluster Monitoring <a name="aks-cluster-monitoring"></a>
- For DevOps, monitoring is a critical practice. It involves continuous tracking, assessment, and management of resources to ensure their performance and availability. Through monitoring we can maintain resiliant, robust infrastructures and applications, we can prevent downtime, and optimize resource usage.
+ For DevOps, monitoring is a critical practice. It involves continuous tracking, assessment, and management of resources to ensure their performance and availability. Through monitoring we can maintain resiliant, robust infrastructures and applications; we can prevent downtime, and optimize resource usage.
 
  ### Container Insights
  Within Azure, we enabled [Container Insights](https://learn.microsoft.com/en-us/azure/azure-monitor/containers/container-insights-overview) for our AKS cluster (terraform-aks-cluster). To accommodate Container Insights, Azure ctreated a Log Analytics Workspace (defaultworkspace-3542213f-7e7a-4dad-aea4-fe30482ed0f3-suk). Within the cluster, Container Insights created a logging workload (ama-logs-rs), as the [Azure Monitor Agent](https://learn.microsoft.com/en-us/azure/azure-monitor/agents/agents-overview).
@@ -390,7 +390,7 @@ Container Insights made data available to the Metrics explorer. Using Metrics, f
 ### Log Analytics - Queries
 Within the AKS Cluster Logs, five custome [queries](https://learn.microsoft.com/en-us/azure/azure-monitor/containers/container-insights-log-query) were created and saved.
 
-THe saved queries are:
+The saved queries are:
  - Average Nodes CPU Usage Percentage per Minute: Capture data on node-level usage at a granular level, with logs recorded per minute.
  - Average Nodes Memory Usage Percentage per Minute:  Tracking memory usage at node level allows us to detect memory-related performance concerns and efficiently allocate resources.
  - Pods Counts with Phase: Provides information on the count of pods in different phases (i.e., Pending, Running, or Terminating), offering insights into pod lifecycle management
@@ -407,7 +407,7 @@ A new alert rule was created (Disk Usage Percentage), and two predefines alert r
 
 An Action Group (AKS-AG) was created to specify actions for the newly defined alerts. Currently, the action group is set to notify pmayer.devopseng@gmail.com, when any of the alert thresholds are breached.
 
-
+___
 ## Secret Management <a name="secret-management"></a> 
 
 A [Key Vault](https://learn.microsoft.com/en-us/azure/key-vault/general/basic-concepts) (aks-rg-kv) was created to manage secrets (i.e., access credential). On creation a key vault is allocated a unique (to Azure) URI. Our URI is: https<span>://</span>aks-rg-kv.vault.azure.net/. The Key Vault URI is used to access and interact with the resources stored within the Azure Key Vault.
@@ -429,19 +429,19 @@ To integrate Key Vault with AKS, we must enable managed identity for the cluster
 #### [Enabling Managed Identity for AKS:](https://learn.microsoft.com/en-us/azure/aks/use-managed-identity)
 Enable a managed identity for an existing AKS cluster:
 
-az aks update --resource-group \<resource-group\> --name \<aks-cluster-name\> --enable-managed-identity
+ - az aks update --resource-group \<resource-group\> --name \<aks-cluster-name\> --enable-managed-identity
 
 In our case:
 
-az aks update --resource-group networking-resource-group --name terraform-aks-cluster --enable-managed-identity
+ - az aks update --resource-group networking-resource-group --name terraform-aks-cluster --enable-managed-identity
 
 When managed identity is enables, the clientId is printed out (ammongst other information). To retrieve the clientId, retrospectively, we can run:
 
-az aks show --resource-group \<resource-group\> --name \<aks-cluster-name\> --query identityProfile
+ - az aks show --resource-group \<resource-group\> --name \<aks-cluster-name\> --query identityProfile
 
 In our case:
 
-az aks show --resource-group networking-resource-group --name terraform-aks-cluster --query identityProfile
+ - az aks show --resource-group networking-resource-group --name terraform-aks-cluster --query identityProfile
 
 #### Assign KV Permissions
 
@@ -449,11 +449,11 @@ Assigning Key Vault Permissions:
 
 Assign "Key Vault Secrets Officer" role to Managed Identity:
 
-az role assignment create --role "Key Vault Secrets Officer" --assignee \<managed-identity-client-id\> --scope /subscriptions/\<subscription-id\>/resourceGroups/\<resource-group\>/providers/Microsoft.KeyVault/vaults/\<key-vault-name\>
+ - az role assignment create --role "Key Vault Secrets Officer" --assignee \<managed-identity-client-id\> --scope /subscriptions/\<subscription-id\>/resourceGroups/\<resource-group\>/providers/Microsoft.KeyVault/vaults/\<key-vault-name\>
 
 In our case:
 
-az role assignment create --role "Key Vault Secrets Officer" --assignee 9d1afaf4-dc19-4743-8e70-b27a8a5f6b37 --scope /subscriptions/3542213f-7e7a-4dad-aea4-fe30482ed0f3/resourceGroups/aks-rg/providers/Microsoft.KeyVault/vaults/aks-rg-kv
+ - az role assignment create --role "Key Vault Secrets Officer" --assignee 9d1afaf4-dc19-4743-8e70-b27a8a5f6b37 --scope /subscriptions/3542213f-7e7a-4dad-aea4-fe30482ed0f3/resourceGroups/aks-rg/providers/Microsoft.KeyVault/vaults/aks-rg-kv
 
 
 ### Addatting the Code to Use KV
