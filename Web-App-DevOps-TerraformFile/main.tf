@@ -15,6 +15,14 @@ provider "azurerm" {
   tenant_id       = "47d4542c-f112-47f4-92c7-a838d8a5e8ef"
 }
 
+output "client_id" {
+  value = var.client_id
+}
+
+output "client_secret" {
+  value = var.client_secret
+}
+
 # Initialise networking-module
 module "networking" {
   source = "./networking-module"

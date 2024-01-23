@@ -522,10 +522,53 @@ Here we see the final deployment of the order management service.
 ## Troubleshooting <a name="troubleshooting"></a>
 Woke up one morning and my cluster was gone.
  Done just sing the Blues! <br>
-Having recreated the cluster, remember to renew credentials in the kubectl file. To do this run:
+Having recreated the cluster, remember to renew credentials in the kubectl file. This will allow the kubectl CLI to access the cluster. To do this run:
+
   - az aks get-credentials --name \<aks-cluster-name\> --resource-group \<resource-group-name\><br>
+
 In our case:<br>
+
   - az aks get-credentials --name terraform-aks-cluster --resource-group networking-resource-group
+
+Managed identity will have to be enabled for the new cluster:<br>
+
+ - az aks update --resource-group <resource-group> --name <aks-cluster-name> --enable-managed-identity<br>
+
+In our case:<br>
+
+ - az aks update --resource-group networking-resource-group --name terraform-aks-cluster --enable-managed-identity
+
+From the output, identify the ' "identityProfile": "kubeletidentity": "clientId" '
+
+Sample snippet of output:
+<pre>
+ "identityProfile": {
+    "kubeletidentity": {
+      "clientId": "9d1afaf4-dc19-4743-8e70-b27a8a5f6b37",
+      "objectId": "e7833490-e65c-451d-bb4d-2d7178e327b7",
+      "resourceId": "/subscriptions/3542213f-7e7a-4dad-aea4-fe30482ed0f3/resourcegroups/MC_networking-resource-group_terraform-aks-cluster_uksouth/providers/Microsoft.ManagedIdentity/userAssignedIdentities/terraform-aks-cluster-agentpool"
+    }
+  },
+</pre>
+If you can't find the clientId, run:
+
+ - az aks show --resource-group <resource-group> --name <aks-cluster-name> --query identityProfile
+
+In our case:<br>
+
+ - az aks show --resource-group networking-resource-group --name terraform-aks-cluster --query identityProfile
+
+This will return information about the managed identity (inc. clientId under identityProfile):
+
+Now assign "Key Vault Secrets Officer" role to Managed Identity:
+
+ - az role assignment create --role "Key Vault Secrets Officer" --assignee \<managed-identity-client-id\> --scope /subscriptions/{subscription-id}/resourceGroups/{resource-group}/providers/Microsoft.KeyVault/vaults/{key-vault-name}
+
+In our example:<br>
+
+ - az role assignment create --role "Key Vault Secrets Officer" --assignee 9d1afaf4-dc19-4743-8e70-b27a8a5f6b37 --scope /subscriptions/3542213f-7e7a-4dad-aea4-fe30482ed0f3/resourceGroups/aks-rg/providers/Microsoft.KeyVault/vaults/aks-rg-kv
+
+#### - NOTE: On a Windows machine with Linux emulation, use PS (as admin) to run these commands. 
 
 Scripts that access the service container (like our Kubernetes@1 task that displays the external IP address of the service) will need to be updated with new access credentials. So, rebuild the Kubernetes@1 login task. However, this time specify connectionType as 'Azure Resource Manager' with Managed Identity authentication, rather than 'Kubernetes Service Connection'.
 

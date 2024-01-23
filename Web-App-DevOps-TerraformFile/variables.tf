@@ -3,25 +3,28 @@
 variable "client_id" {
   description = "Provider Client Id"
   type        = string
-  sensitive   = true
-  default     = "c2fc7959-d7b4-4f23-827f-fe6c59827bce"
+  # sensitive   = true
+  # default     = "c2fc7959-d7b4-4f23-827f-fe6c59827bce"
 }
 # client-secret to reference env var TF_VAR_client_secret
 variable "client_secret" {
   description = "Provider Client Secret"
   type        = string
-  sensitive   = true
-  default     = "Ik98Q~ZObrT3fs_SnHOOJoW~I6II9NkuQ~1W9dx6"
+  # sensitive   = true
+  # default     = "Ik98Q~ZObrT3fs_SnHOOJoW~I6II9NkuQ~1W9dx6"
 }
 
 # Remove defaults for when env var are defined
 # Set env var:
 # setx TF_VAR_client_id client_id /m
+# setx TF_VAR_client_id "c2fc7959-d7b4-4f23-827f-fe6c59827bce" /m
 # setx TF_VAR_client_secret client_secret /m
-#
+# setx TF_VAR_client_secret "Ik98Q~ZObrT3fs_SnHOOJoW~I6II9NkuQ~1W9dx6" /m
+# Remember to restart shell after setting to view the vars
 # Check env var set:
 # $env:TF_VAR_client_id
-#
+# or, to view all env vars:
+# Get-ChildItem env:
 # To delete env var:
 # [Environment]::SetEnvironmentVariable("TF_VAR_user_name", $null, "Machine")
 
