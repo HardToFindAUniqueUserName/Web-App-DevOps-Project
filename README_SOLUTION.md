@@ -181,6 +181,14 @@ The main.tf file (at the root of the Terraform-Project directory):
 
 The main.tf file accepts arguments (as input variables) directly, from variables files, and output files as appropriate.
 
+### Hiding access credentials
+To hide sensative access credentials (like the provider client id and client secret), we have employed system (Windows 10) [environmental variables](https://developer.hashicorp.com/terraform/cli/config/environment-variables). This is one technique available to [manage secrets in Terraform](https://blog.gruntwork.io/a-comprehensive-guide-to-managing-secrets-in-your-terraform-code-1d586955ace1).
+
+Our development environment is running on Windows 10. So, [Windows environmental variables](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_environment_variables?view=powershell-7.4) were declared as TF_VAR_variablename (i.e., TF_VAR_client_id). 
+
+Variables for the sensative access credentials are declared and used as normal. They are declared 'sensative', with no default value. Terraform aquires the environmental key:value objects from the underlying OS. 
+
+
 ### terraform apply
 These Terraform CLI commands are used to deploy and manage our [IaC:](https://developer.hashicorp.com/terraform/cli/commands)
  - terraform plan:&ensp;Displays a list of resources that will be created, updated or deleted when the configuration is applied.
