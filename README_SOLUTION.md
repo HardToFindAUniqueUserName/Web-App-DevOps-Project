@@ -528,9 +528,9 @@ Here we see the final deployment of the order management service.
 
 ![Deployment](https://github.com/HardToFindAUniqueUserName/Web-App-DevOps-Project/blob/main/Resources/DashBoard.GIF)
 
-![FinalDeployment](./Resources/FinalDeployment.gif)
+![FinalDeployment](/Resources/FinalDeployment.gif)
 
-![Web-App-Dash](./Resources/DashBoard.gif)
+![Web-App-Dash](/Resources/DashBoard.gif)
 
 ## Deployment Architecture
 Herewith the architecture of the complete deployment:
