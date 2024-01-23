@@ -525,12 +525,16 @@ Application thoroughly tested via web-browser.
  - New order added
 
 Here we see the final deployment of the order management service.
+
 ![Deployment](https://github.com/HardToFindAUniqueUserName/Web-App-DevOps-Project/blob/main/Resources/DashBoard.GIF)
+
 ![FinalDeployment](./Resources/FinalDeployment.gif)
+
+![Web-App-Dash](./Resources/DashBoard.gif)
 
 ## Deployment Architecture
 Herewith the architecture of the complete deployment:
-![DevOps Pipeline Architecture.pdf](https://github.com/HardToFindAUniqueUserName/Web-App-DevOps-Project/files/14022921/DevOps.Pipeline.Architecture.pdf)
+[DevOps Pipeline Architecture.pdf](https://github.com/HardToFindAUniqueUserName/Web-App-DevOps-Project/files/14022921/DevOps.Pipeline.Architecture.pdf)
 
 ## Troubleshooting <a name="troubleshooting"></a>
 Woke up one morning and my cluster was gone.
